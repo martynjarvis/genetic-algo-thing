@@ -11,3 +11,7 @@
 *.lai
 *.la
 *.a
+
+# ms vx stuff
+*.vcxproj*
+Debug*
