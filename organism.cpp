@@ -38,11 +38,11 @@ double Organism::Fitness()
 
 void Organism::Mutate()
 {	
-	// randomly choose to randomly shift each gene
+	// randomly choose to shift each gene
 	for (int i=0; i<numGenes; i++){
 		if (rand()%100<mutationRate){
-			double range = (geneMax-geneMin)*mutationAmt; // ammount value can be changed
-			double newValue = genome[i] + (-1.+2.0*double(rand()%1000)/1000)*range;
+			double range = (geneMax-geneMin)*mutationAmt; 
+			double newValue = genome[i] + (-1.+2.0*double(rand())/RAND_MAX)*range; // rand() limits the granularity
 			newValue = max(newValue,geneMin);
 			newValue = min(newValue,geneMax);
 			genome[i] = newValue;
@@ -55,7 +55,7 @@ void Organism::Randomise(){
 	// randomly shift all gene
 	for (int i=0; i<numGenes; i++){
 			double range = (geneMax-geneMin);
-			genome[i] = geneMin + range*double(rand()%2000)/1000;
+			genome[i] = geneMin + range*2.0*double(rand())/RAND_MAX;
 	}
 	return;
 }
