@@ -6,13 +6,13 @@
 #include "organism.h"
 
 // quadratic equation, roots = 3,5
-double quad(std::vector<double> genome){
+double quad(std::vector<double> * genome){
 	int a = 2;
 	int b = -16;
 	int c = 30;
 	double retVal = 0.0;
-	double x1 = genome[0];
-	double x2 = genome[1];
+	double x1 = genome->at(0);
+	double x2 = genome->at(1);
 	retVal+= fabs(a*x1*x1 + b*x1 + c);
 	retVal+= fabs(a*x2*x2 + b*x2 + c);
 	retVal+= 1.0/(fabs(x1-x2));// punish equal roots
@@ -31,7 +31,7 @@ int main()
 
 	// Set Population paramaters	
 	Population::populationSize=50;
-	Population::numGenerations=500;
+	Population::numGenerations=1000;
 	Population::numChildren = 100;  
 
 	// create population (this initialises the first generation)
@@ -43,10 +43,10 @@ int main()
 	for (int i =0; i<Population::numGenerations; i++){
 		A.Generation();
 		std::cout<<"Generation:"<<i
-			<<", best:"<<A.GetBestOrganism().Fitness()
-			<<", genome:"<<A.GetBestOrganism().genome[0]
+			<<"\tbest:"<<A.GetBestOrganism().Fitness()
+			<<"\tgenome:"<<A.GetBestOrganism().genome[0]
 			<<","<<A.GetBestOrganism().genome[1]<<std::endl;
 	}
 
 	system("PAUSE");
-}//end of main()
+}

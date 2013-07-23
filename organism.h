@@ -1,7 +1,5 @@
 /* 
-
   organism.h
-
 */
 
 #ifndef organism_h
@@ -9,10 +7,6 @@
 
 #include <vector>
 #include <iostream>
-
-extern int g_numGenes;
-extern int g_mutationRate;
-extern double g_mutationAmt;
 
 class Organism
 {
@@ -31,9 +25,10 @@ class Organism
 		static double geneMax;
 		static int mutationRate;// 1 = 1%
 		static double mutationAmt;
-		static double (*_fitness)(std::vector<double> genome);
+		static double (*_fitness)(std::vector<double> * genome);
 
     private:
 		double fitness;// cached fitness to avoid recalculating
 };
+
 #endif

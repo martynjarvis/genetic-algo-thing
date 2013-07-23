@@ -1,8 +1,3 @@
-//#include <cstdlib> 
-//#include <ctime> 
-//#include <iostream>
-//#include <stdio.h>
-//#include <assert.h>
 
 #include "organism.h"
 
@@ -13,7 +8,6 @@ Organism::Organism( )
 	genome.assign(numGenes,1.);
 	fitness = -999.;
 }
-
 
 Organism Organism::Mate(Organism &partner){
 	// randomly pick genes from self or partner
@@ -37,7 +31,8 @@ double Organism::Fitness()
 	if (fitness>-1.){
 		return fitness;
 	}
-	fitness = _fitness(genome);
+	// calculate fitness
+	fitness = _fitness(&genome);
 	return fitness;
 }
 
@@ -65,16 +60,16 @@ void Organism::Randomise(){
 	return;
 }
 
-double defaultFitness(std::vector<double> genome){
+double defaultFitness(std::vector<double> * genome){
 	// calculate fitness
 	double retVal = 0.0;
-	for (unsigned int i=0; i<genome.size(); i++){
-		retVal+=genome[i]*genome[i];
+	for (unsigned int i=0; i<genome->size(); i++){
+		retVal+=genome->at(i)*genome->at(i);
 	}
 	return retVal;
 }
 
-double (*Organism::_fitness)(std::vector<double> genome) = defaultFitness;
+double (*Organism::_fitness)(std::vector<double> * genome) = defaultFitness;
 
 int Organism::numGenes = 2;
 double Organism::geneMin = -1.;

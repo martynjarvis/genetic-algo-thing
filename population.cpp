@@ -6,16 +6,11 @@ using namespace std;
 Population::Population( )
 {
 	organisms.assign(populationSize,Organism());
-
-    topFitness = 0;
-    sumFitness = 0;
-    fittest    = 0;
-	//std::cout<<func()<<std::endl;
 }
 
 void Population::Generation()
 {  
-	//producing 'nchildren' children, 
+	// generate 'numChildren' children, 
 	std::vector<Organism> children;
 	children.reserve(numChildren);
 

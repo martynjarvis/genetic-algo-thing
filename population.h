@@ -2,23 +2,14 @@
   population.h
 */
 
-
-
 #ifndef population_h
 #define population_h
 
-//#define        GPOPSIZE 100
-
 #include <vector>
-#include <algorithm>    // std::sort
+#include <algorithm> 
 #include <iostream>
 
-
 #include "organism.h"
-
-extern int g_populationsize;
-extern int g_numgenerations;
-
 
 class Population
 {
@@ -38,6 +29,5 @@ class Population
 		double topFitness;
 		double sumFitness;
 };
-
 
 #endif
