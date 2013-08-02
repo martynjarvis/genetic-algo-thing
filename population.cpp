@@ -3,33 +3,69 @@
 
 using namespace std;
 
-Population::Population( )
+
+struct Cmp
 {
-	organisms.assign(populationSize,Organism());
+    bool operator() (Organism * p1, Organism * p2) const
+    {
+        if (p1->GetFitness() != p2->GetFitness()) return p1->GetFitness() < p2->GetFitness();
+        return false;
+    }
+};
+
+Population::Population(Config * _cfg)
+{
+	cfg = _cfg;
+	for (int i =0; i<cfg->populationSize;i++)
+	{
+		//Organism a(_cfg);
+		organisms.push_back(new Organism(_cfg));
+	}
 }
+
+Population::~Population()
+{
+	while(!organisms.empty())
+	{
+		delete organisms.back();
+		organisms.pop_back();
+	}
+}
+
 
 void Population::Generation()
 {  
 	// generate 'numChildren' children, 
-	std::vector<Organism> children;
-	children.reserve(numChildren);
+	std::vector<Organism*> children;
+	children.reserve(cfg->numChildren);
 
-	for (int i =0; i<numChildren;i++){ //todo, this should favour the fittest
-		int ind1 = rand()%populationSize;
+	//TODO check num child > pop size
+
+	for (int i =0; i<cfg->numChildren;i++){ 
+		// pick two at random
+		std::uniform_int_distribution<> popDist(0, cfg->populationSize-1);//todo, this should favour the fittest
+		int ind1 = popDist(cfg->g);//
 		int ind2 = ind1;
 		while (ind2==ind1) {
-			ind2 = rand()%populationSize;
+			ind2 = popDist(cfg->g);
 		}
-		Organism child = organisms[ind1].Mate(organisms[ind2]);
-		child.Mutate();
+		// mate them
+		Organism * child = new Organism(organisms[ind1],organisms[ind2],cfg);
+		// mutate offspring
+		child->Mutate();
+		// add to list
 		children.push_back(child);
 	}
 
 	// sort children by fitness
-	std::sort(children.begin(),children.end());
+	std::sort(children.begin(),children.end(),Cmp());
 
-	// kill weakest
-	children.resize(populationSize);
+	// kill weakest, leaving only 'populationSize'
+	while(children.size()>cfg->populationSize)
+	{
+		delete children.back();
+		children.pop_back();
+	}
 
 	// reasign population to new child population
 	organisms = children;
@@ -38,20 +74,17 @@ void Population::Generation()
 }
 
 void Population::Randomise(){
-	for (int i =0; i<populationSize;i++){ 
-		organisms[i].Randomise();
+	for (int i =0; i<cfg->populationSize;i++){ 
+		organisms[i]->Randomise();
 	}
 }
 
-Organism Population::GetOrganism(int n){
+Organism * Population::GetOrganism(int n){
 	 return organisms[n];
 }
 
-Organism Population::GetBestOrganism(){
+Organism * Population::GetBestOrganism(){
 	 return GetOrganism(0);
 }
 
-int Population::populationSize = 50;  
-int Population::numGenerations = 50;  
-int Population::numChildren = 100;   
 

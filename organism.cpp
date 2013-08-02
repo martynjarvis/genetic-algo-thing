@@ -1,78 +1,104 @@
 
 #include "organism.h"
 
-using namespace std;
 
-Organism::Organism( )
+Organism::Organism(Config * _cfg)
 {
-	genome.assign(numGenes,1.);
+	cfg = _cfg;
+	// overwrite this to set up organism
+	// temporary example
+	// no reason that the genome can't contain multiple types
+	for (int i=0; i<cfg->numGenes; i++)
+	{
+		genome.push_back(new RealGene(cfg));
+	}
 	fitness = -999.;
 }
 
-Organism Organism::Mate(Organism &partner){
-	// randomly pick genes from self or partner
-	Organism child;
-	for (int i=0; i<numGenes; i++){
-		int a = rand()%2;
-		if (a == 0){
-			child.genome[i] = genome[i];
-		}
-		else{
-			child.genome[i] = partner.genome[i];
-		}
+Organism::~Organism()
+{
+	//clean up genome
+	while(!genome.empty())
+	{
+		delete genome.back();
+		genome.pop_back();
 	}
-	return child;
 }
 
-double Organism::Fitness()
+Organism::Organism(Organism * mother,Organism * father,Config * _cfg )
+{
+	cfg = _cfg;
+	// copy genes from father or mother
+	for (int i=0; i<cfg->numGenes; i++)
+	{
+		if ((rand()%2) == 0)
+		{
+			genome.push_back(mother->GetGene(i)->Copy());
+		}
+		else
+		{
+			genome.push_back(father->GetGene(i)->Copy());
+		}
+	}
+	fitness = -999.;
+}
+
+Gene * Organism::GetGene(int i)
+{
+	// returns a pointer to gene
+	return genome.at(i);
+}
+
+
+double Organism::GetFitness()
 {
 	// A low fitness is good
 	// if fitness has been calculated return that
-	if (fitness>-1.){
+	if (fitness>-1.)
+	{
 		return fitness;
 	}
-	// calculate fitness
-	fitness = _fitness(&genome);
+	// or calculate, store and return fitness
+	fitness = CalcFitness();
 	return fitness;
+}
+
+double Organism::CalcFitness()
+{
+	// overwrite this to set up organism
+	/*return 1.;*/
+	// temproary example
+	int a = 2;
+	int b = -16;
+	int c = 30;
+	double retVal = 0.0;
+	double x1,x2;
+	genome.at(0)->Value(x1);
+	genome.at(1)->Value(x2);
+	retVal+= fabs(a*x1*x1 + b*x1 + c);
+	retVal+= fabs(a*x2*x2 + b*x2 + c);
+	retVal+= 1.0/(fabs(x1-x2));// punish equal roots
+	return retVal;
 }
 
 void Organism::Mutate()
 {	
 	// randomly choose to shift each gene
-	for (int i=0; i<numGenes; i++){
-		if (rand()%100<mutationRate){
-			double range = (geneMax-geneMin)*mutationAmt; 
-			double newValue = genome[i] + (-1.+2.0*double(rand())/RAND_MAX)*range; // rand() limits the granularity
-			newValue = max(newValue,geneMin);
-			newValue = min(newValue,geneMax);
-			genome[i] = newValue;
-		}
+	for (int i=0; i<cfg->numGenes; i++)
+	{
+		genome[i]->Mutate();
 	}
 	return;
 }
 
-void Organism::Randomise(){
-	// randomly shift all gene
-	for (int i=0; i<numGenes; i++){
-			double range = (geneMax-geneMin);
-			genome[i] = geneMin + range*2.0*double(rand())/RAND_MAX;
+void Organism::Randomise()
+{	
+	// randomly choose to shift each gene
+	for (int i=0; i<cfg->numGenes; i++)
+	{
+		genome[i]->Randomise();
 	}
 	return;
 }
 
-double defaultFitness(std::vector<double> * genome){
-	// calculate fitness
-	double retVal = 0.0;
-	for (unsigned int i=0; i<genome->size(); i++){
-		retVal+=genome->at(i)*genome->at(i);
-	}
-	return retVal;
-}
 
-double (*Organism::_fitness)(std::vector<double> * genome) = defaultFitness;
-
-int Organism::numGenes = 2;
-double Organism::geneMin = -1.;
-double Organism::geneMax = +1.;
-int Organism::mutationRate = 1;// 1 = 1%
-double Organism::mutationAmt = 0.1;

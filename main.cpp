@@ -4,48 +4,42 @@
 
 #include "population.h"
 #include "organism.h"
+#include "config.h"
 
 // quadratic equation, roots = 3,5
-double quad(std::vector<double> * genome){
-	int a = 2;
-	int b = -16;
-	int c = 30;
-	double retVal = 0.0;
-	double x1 = genome->at(0);
-	double x2 = genome->at(1);
-	retVal+= fabs(a*x1*x1 + b*x1 + c);
-	retVal+= fabs(a*x2*x2 + b*x2 + c);
-	retVal+= 1.0/(fabs(x1-x2));// punish equal roots
-	return retVal;
-}
 
 int main()
-{
-	// Set Organism paramaters
-	Organism::numGenes = 2;
-	Organism::geneMin = -100.;
-	Organism::geneMax = 100.;
-	Organism::mutationRate = 5;// 1 = 1%
-	Organism::mutationAmt = 0.05;
-	Organism::_fitness = quad;
+{	
+	Config cfg;
+	// pop config
+	cfg.populationSize = 50;  
+	cfg.numGenerations = 1000;  
+	cfg.numChildren = 100;   
 
-	// Set Population paramaters	
-	Population::populationSize=50;
-	Population::numGenerations=1000;
-	Population::numChildren = 100;  
+	// organism config
+	cfg.numGenes = 2;
+
+	// gene config
+	cfg.mutProb = 5;
+	cfg.max = 100.;
+	cfg.min = -100.;
+	cfg.mutAmount = 2.;
 
 	// create population (this initialises the first generation)
-	Population A;
+	Population A(&cfg);
 	
 	// shuffle starting population
 	A.Randomise();
 
-	for (int i =0; i<Population::numGenerations; i++){
+	for (int i =0; i<cfg.numGenerations; i++){
 		A.Generation();
+		double x0,x1;
+		A.GetBestOrganism()->GetGene(0)->Value(x0);
+		A.GetBestOrganism()->GetGene(1)->Value(x1);
 		std::cout<<"Generation:"<<i
-			<<"\tbest:"<<A.GetBestOrganism().Fitness()
-			<<"\tgenome:"<<A.GetBestOrganism().genome[0]
-			<<","<<A.GetBestOrganism().genome[1]<<std::endl;
+			<<"\tbest:"<<A.GetBestOrganism()->GetFitness()
+			<<"\tgenome:"<<x0
+			<<","<<x1<<std::endl;
 	}
 
 	system("PAUSE");

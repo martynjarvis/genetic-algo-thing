@@ -10,24 +10,21 @@
 #include <iostream>
 
 #include "organism.h"
+#include "config.h"
 
 class Population
 {
     public:
-        Population();
+        Population(Config * cfg);
+		~Population();
         void Generation();	
         void Randomise();
-        Organism GetOrganism(int n);	
-		Organism GetBestOrganism();
-		static int populationSize;  
-		static int numGenerations;  
-		static int numChildren;   
+        Organism * GetOrganism(int n);	
+		Organism * GetBestOrganism();
 
     private:
-        std::vector<Organism> organisms;
-        int fittest;
-		double topFitness;
-		double sumFitness;
+        std::vector<Organism*> organisms;
+		Config * cfg;
 };
 
 #endif

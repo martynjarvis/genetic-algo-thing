@@ -1,5 +1,6 @@
 /* 
   organism.h
+	Base organism
 */
 
 #ifndef organism_h
@@ -8,27 +9,29 @@
 #include <vector>
 #include <iostream>
 
+#include "organism.h"
+#include "gene.h"
+#include "config.h"
+
 class Organism
 {
     public:
-        Organism();
+        Organism(Config * _cfg);
+		Organism(Organism * mother, Organism * father, Config * _cfg);
+		~Organism();
+		Gene * GetGene(int i);
         void Mutate();
-		double Fitness();
-		Organism Mate(Organism &partner);
+		double GetFitness();
+		double CalcFitness();
 		void Randomise();
-		bool operator< ( Organism &b){return Fitness() < b.Fitness();}
-		std::vector<double> genome;// this should be private
-
-		// static parameters 
-		static int numGenes;
-		static double geneMin;
-		static double geneMax;
-		static int mutationRate;// 1 = 1%
-		static double mutationAmt;
-		static double (*_fitness)(std::vector<double> * genome);
+		//bool operator< (Organism &b){
+		//	return GetFitness() < b.GetFitness();
+		//}
 
     private:
-		double fitness;// cached fitness to avoid recalculating
+		std::vector<Gene*> genome;
+		double fitness;
+		Config * cfg;
 };
 
 #endif
