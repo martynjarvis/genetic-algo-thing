@@ -16,15 +16,15 @@ class Population
 {
     public:
         Population(Config * cfg);
-		~Population();
-        void Generation();	
+        ~Population();
+        void Generation();    
         void Randomise();
-        Organism * GetOrganism(int n);	
-		Organism * GetBestOrganism();
+        Organism * GetOrganism(int n);    
+        Organism * GetBestOrganism();
 
     private:
         std::vector<Organism*> organisms;
-		Config * cfg;
+        Config * cfg;
 };
 
 #endif
