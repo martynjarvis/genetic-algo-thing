@@ -27,9 +27,7 @@ Organism::Organism(Organism * mother,Organism * father,Config * _cfg )
 {
     cfg = _cfg;
     // copy genes from father or mother
-
     std::uniform_int_distribution<> dist(0, 1);
-
     for (int i=0; i<cfg->numGenes; i++)
     {
         if (dist(cfg->g) == 0)
@@ -69,6 +67,7 @@ double Organism::CalcFitness()
     // overwrite this to set up organism
     /*return 1.;*/
     // temproary example
+    // quadratic equation, roots = 3,5
     int a = 2;
     int b = -16;
     int c = 30;

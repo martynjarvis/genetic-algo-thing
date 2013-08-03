@@ -6,15 +6,14 @@
 #include "organism.h"
 #include "config.h"
 
-// quadratic equation, roots = 3,5
 
 int main()
 {    
     Config cfg;
     // pop config
-    cfg.populationSize = 5;  
-    cfg.numGenerations = 10000;  
-    cfg.numChildren = 10;   
+    cfg.populationSize = 50;  
+    cfg.numGenerations = 10;  
+    cfg.numChildren = 100;   
 
     // organism config
     cfg.numGenes = 2;

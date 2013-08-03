@@ -21,6 +21,8 @@ class Config
         int populationSize;  
         int numGenerations;  
         int numChildren;   
+        bool geometricMating;
+        double geometricMatingParam;
 
         // organism config
         int numGenes;

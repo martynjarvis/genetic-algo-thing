@@ -55,8 +55,8 @@ void Population::Generation()
     // sort children by fitness
     std::sort(children.begin(),children.end(),Cmp());
 
-    // kill weakest, leaving only 'populationSize'
-    while(children.size()>cfg->populationSize)
+    // cull weakest, leaving only 'populationSize'
+    while(children.size()>cfg->populationSize)// warning unsigned int
     {
         delete children.back();
         children.pop_back();
