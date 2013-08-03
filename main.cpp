@@ -13,7 +13,7 @@ int main()
     Config cfg;
     // pop config
     cfg.populationSize = 5;  
-    cfg.numGenerations = 1000;  
+    cfg.numGenerations = 10000;  
     cfg.numChildren = 10;   
 
     // organism config

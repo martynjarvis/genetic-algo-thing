@@ -28,7 +28,6 @@ Population::~Population()
     }
 }
 
-
 void Population::Generation()
 {  
     // generate 'numChildren' children, 
@@ -64,8 +63,15 @@ void Population::Generation()
     }
 
     // reasign population to new child population
-    organisms = children;
+    organisms.swap(children);
     
+    // delete previous population (now in children)
+     while(!children.empty())
+    {
+        delete children.back();
+        children.pop_back();
+    }
+
     return;
 }
 

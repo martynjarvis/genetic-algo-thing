@@ -24,9 +24,6 @@ class Organism
         double GetFitness();
         double CalcFitness();
         void Randomise();
-        //bool operator< (Organism &b){
-        //    return GetFitness() < b.GetFitness();
-        //}
 
     private:
         std::vector<Gene*> genome;
