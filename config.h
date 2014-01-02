@@ -8,6 +8,39 @@
 #include <iostream>
 #include <random>
 
+template <class T> class TConfig
+{
+    public:
+        TConfig(){
+            // init something?
+            // seed random num gen?
+            std::cout<<"tconfig loaded"<<std::endl;
+        }
+ 
+        // pop config
+        int populationSize;  
+        int numGenerations;  
+        int numChildren;   
+        bool geometricMating;
+        double geometricMatingParam;
+
+        // organism config
+        int numGenes;
+
+        // gene config
+        // todo, these should be separate for each gene
+        // and what about other types URGH!
+        int mutProb;
+        T max;
+        T min;
+		T init;
+        T mutAmount;
+
+        // keep track of my random number generator
+        std::minstd_rand g;
+};
+
+
 class Config
 {
     public:

@@ -10,6 +10,55 @@
 
 #include "config.h"
 
+template <class T> class TGene
+{
+    public:
+		T value;
+        TGene(TConfig<T> * _cfg)
+        {
+            cfg = _cfg;
+            Randomise();
+        }
+        void Randomise()
+        {
+            // implement this
+            return;
+        }
+        void Mutate()
+        {
+			std::uniform_int_distribution<> amountDist(-10,10);
+			union {
+				T input;
+				int output;
+			} data;
+			data.input = value;
+			data.output = data.output += amountDist(cfg->g);
+			value = data.input;
+            return;
+        };
+
+
+
+
+        TGene * Copy()
+        {
+            // implement this
+            return 0;
+        };
+        // return functions
+        T GetValue(){
+			return value;
+		}
+        void SetValue(T newValue){
+			value = newValue;
+		}
+
+    protected:
+        TConfig<T> * cfg;
+};
+
+
+
 class Gene
 {
     public:

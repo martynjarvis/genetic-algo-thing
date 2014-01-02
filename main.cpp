@@ -9,6 +9,20 @@
 
 int main()
 {    
+	// test templated classes
+    TConfig<char> tcfg;
+
+    TGene<char> tgene(&tcfg);
+
+	tgene.SetValue('a');
+	std::cout<<"Val:"<<tgene.GetValue()<<std::endl;
+
+	for (int i =0; i<100; i++){
+		tgene.Mutate();
+		std::cout<<"Val:"<<tgene.GetValue()<<std::endl;
+    }
+
+
     Config cfg;
     // pop config
     cfg.populationSize = 50;  
