@@ -27,17 +27,18 @@ template <class T> class TGene
         void Mutate()
         {
 			std::uniform_int_distribution<> amountDist(-10,10);
+			const int j = sizeof(T)/sizeof(int);
 			union {
 				T input;
-				int output;
+				unsigned int output[j];
 			} data;
 			data.input = value;
-			data.output = data.output += amountDist(cfg->g);
+			for (int i=0; i<j; i++){
+				data.output[i] = data.output[i] += amountDist(cfg->g);
+			}
 			value = data.input;
-            return;
+            return;// TODO rather than +- an ammount, flip a bit
         };
-
-
 
 
         TGene * Copy()

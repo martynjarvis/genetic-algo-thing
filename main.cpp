@@ -10,11 +10,11 @@
 int main()
 {    
 	// test templated classes
-    TConfig<char> tcfg;
+    TConfig<double> tcfg;
 
-    TGene<char> tgene(&tcfg);
+    TGene<double> tgene(&tcfg);
 
-	tgene.SetValue('a');
+	tgene.SetValue(10.0);
 	std::cout<<"Val:"<<tgene.GetValue()<<std::endl;
 
 	for (int i =0; i<100; i++){
