@@ -34,7 +34,7 @@ template <class T> class TConfig
         int mutProb;
         T max;
         T min;
-		T init;
+        std::vector<T> init;
         T mutAmount;
 
         // fitness func

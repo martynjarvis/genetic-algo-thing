@@ -21,7 +21,8 @@ template <class T> class TOrganism
             cfg = _cfg;
             for (int i=0; i<cfg->numGenes; i++)
             {
-                genome.push_back(new TGene<T>(cfg));
+                T initval = cfg->init.at(i); //TODO loop i over init vals, copy?
+                genome.push_back(new TGene<T>(cfg, initval));
             }
             fitness = -999.;
         }
@@ -56,6 +57,14 @@ template <class T> class TOrganism
             }
         }
 
+        void PrintGenome(){
+            std::cout<<"Genome:";
+            for (int i=0; i<cfg->numGenes; i++){
+                std::cout<<'-'<<genome.at(i)->value;
+            }
+            std::cout<<std::endl;
+        }
+
         TGene<T> * GetGene(int i)
         {
             // returns a pointer to gene
@@ -67,9 +76,7 @@ template <class T> class TOrganism
         }
 
         void Swap(int a, int b){
-            T temp = genome.at(a);
-            genome.at(a) = genome.at(b);
-            genome.at(b) = temp;
+            std::swap(genome.at(a),genome.at(b));
             return;
         }
 

@@ -10,7 +10,7 @@
 // forward declaration
 //template <class T> class TGene;
 
-double fitness(std::vector<TGene<double>*> * genome)
+double fitness(std::vector<TGene<int>*> * genome)
 {
     return 1.0;
 }
@@ -18,12 +18,20 @@ double fitness(std::vector<TGene<double>*> * genome)
 int main()
 {    
 	// test templated classes
-    TConfig<double> tcfg;
-    tcfg.numGenes = 2;
-    tcfg.init = 2.0;
+    TConfig<int> tcfg;
+    tcfg.numGenes = 4;
+    tcfg.init.push_back(1);
+    tcfg.init.push_back(2);
+    tcfg.init.push_back(3);
+    tcfg.init.push_back(4);
+
     tcfg.fitness = &fitness;
 
-    TOrganism<double> torg(&tcfg);
+    TOrganism<int> torg(&tcfg);
+    torg.PrintGenome();
+
+    torg.Swap(1,2);
+    torg.PrintGenome();
 
     std::cout<<"Fitness:"<<torg.GetFitness()<<std::endl;
 

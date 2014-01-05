@@ -14,15 +14,10 @@ template <class T> class TGene
 {
     public:
 		T value;
-        TGene(TConfig<T> * _cfg)
+        TGene(TConfig<T> * _cfg, T initval)
         {
             cfg = _cfg;
-            value = cfg->init;
-        }
-        void Randomise()
-        {
-            // implement this
-            return;
+            value = initval; // TODO copy?
         }
         void Mutate()
         {
