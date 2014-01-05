@@ -1,5 +1,6 @@
 #include "organism.h"
 
+
 Organism::Organism(Config * _cfg)
 {
     cfg = _cfg;

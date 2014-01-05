@@ -8,10 +8,10 @@ all: run
 $(EXECUTABLE): main.o population.o organism.o 
 		$(CC) $(LDFLAGS) main.o population.o organism.o -o $(EXECUTABLE)
 
-main.o: main.cpp
+main.o: main.cpp 
 		$(CC) $(CFLAGS) main.cpp
 
-population.o: population.cpp
+population.o: population.cpp 
 		$(CC) $(CFLAGS) population.cpp
 
 organism.o: organism.cpp

@@ -8,6 +8,11 @@
 #include <iostream>
 #include <random>
 
+// forward declaration
+template <class T> class TGene;
+
+#include "gene.h"
+
 template <class T> class TConfig
 {
     public:
@@ -21,21 +26,19 @@ template <class T> class TConfig
         int populationSize;  
         int numGenerations;  
         int numChildren;   
-        bool geometricMating;
-        double geometricMatingParam;
 
         // organism config
         int numGenes;
 
         // gene config
-        // todo, these should be separate for each gene
-        // and what about other types URGH!
         int mutProb;
         T max;
         T min;
 		T init;
         T mutAmount;
 
+        // fitness func
+        double (*fitness)(std::vector<TGene<T>*> * genome);
         // keep track of my random number generator
         std::minstd_rand g;
 };

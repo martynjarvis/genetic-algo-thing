@@ -2,26 +2,30 @@
 #include <iostream>
 #include <stdio.h>
 
-#include "population.h"
+#include "gene.h"
 #include "organism.h"
+#include "population.h"
 #include "config.h"
 
+// forward declaration
+//template <class T> class TGene;
+
+double fitness(std::vector<TGene<double>*> * genome)
+{
+    return 1.0;
+}
 
 int main()
 {    
 	// test templated classes
     TConfig<double> tcfg;
+    tcfg.numGenes = 2;
+    tcfg.init = 2.0;
+    tcfg.fitness = &fitness;
 
-    TGene<double> tgene(&tcfg);
+    TOrganism<double> torg(&tcfg);
 
-	tgene.SetValue(10.0);
-	std::cout<<"Val:"<<tgene.GetValue()<<std::endl;
-
-	for (int i =0; i<100; i++){
-		tgene.Mutate();
-		std::cout<<"Val:"<<tgene.GetValue()<<std::endl;
-    }
-
+    std::cout<<"Fitness:"<<torg.GetFitness()<<std::endl;
 
     Config cfg;
     // pop config
@@ -54,5 +58,4 @@ int main()
                  <<"\tgenome:"<<x0<<","<<x1<<std::endl;
     }
 
-    system("PAUSE");
 }

@@ -17,7 +17,7 @@ template <class T> class TGene
         TGene(TConfig<T> * _cfg)
         {
             cfg = _cfg;
-            Randomise();
+            value = cfg->init;
         }
         void Randomise()
         {
@@ -39,8 +39,6 @@ template <class T> class TGene
 			value = data.input;
             return;// TODO rather than +- an ammount, flip a bit
         };
-
-
         TGene * Copy()
         {
             // implement this
