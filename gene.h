@@ -10,13 +10,16 @@
 
 #include "config.h"
 
+// this class is probably superfluous.
+// rather than TGene<T> we should probably just have T which the user
+// implements, or just uses a given type (int, float)
+
 template <class T> class TGene
 {
     public:
 		T value;
-        TGene(TConfig<T> * _cfg, T initval)
+        TGene( T initval)
         {
-            cfg = _cfg;
             value = initval; // TODO copy?
         }
         void Mutate()
@@ -29,15 +32,14 @@ template <class T> class TGene
 			} data;
 			data.input = value;
 			for (int i=0; i<j; i++){
-				data.output[i] = data.output[i] += amountDist(cfg->g);
+				//data.output[i] = data.output[i] += amountDist(g);
 			}
 			value = data.input;
             return;// TODO rather than +- an ammount, flip a bit
         };
-        TGene * Copy()
+        TGene<T> * Copy()
         {
-            // implement this
-            return 0;
+            return new TGene<T>(*this);
         };
         // return functions
         T GetValue(){
@@ -46,9 +48,6 @@ template <class T> class TGene
         void SetValue(T newValue){
 			value = newValue;
 		}
-
-    protected:
-        TConfig<T> * cfg;
 };
 
 

@@ -17,53 +17,28 @@ double fitness(std::vector<TGene<int>*> * genome)
 
 int main()
 {    
-	// test templated classes
-    TConfig<int> tcfg;
-    tcfg.numGenes = 4;
-    tcfg.init.push_back(1);
-    tcfg.init.push_back(2);
-    tcfg.init.push_back(3);
-    tcfg.init.push_back(4);
-
-    tcfg.fitness = &fitness;
-
-    TOrganism<int> torg(&tcfg);
-    torg.PrintGenome();
-
-    torg.Swap(1,2);
-    torg.PrintGenome();
-
-    std::cout<<"Fitness:"<<torg.GetFitness()<<std::endl;
-
-    Config cfg;
-    // pop config
-    cfg.populationSize = 50;  
-    cfg.numGenerations = 10;  
-    cfg.numChildren = 100;   
-
-    // organism config
-    cfg.numGenes = 2;
-
-    // gene config
-    cfg.mutProb = 5;
-    cfg.max = 100.;
-    cfg.min = -100.;
-    cfg.mutAmount = 10.;
-
-    // create population (this initialises the first generation)
-    Population A(&cfg);
     
-    // shuffle starting population
-    A.Randomise();
+    TPopulation<TOrganism<int>>::populationSize = 50;  
+    TPopulation<TOrganism<int>>::numGenerations = 10;  
+    TPopulation<TOrganism<int>>::numChildren = 100;   
 
-    for (int i =0; i<cfg.numGenerations; i++){
-        A.Generation();
-        double x0,x1;
-        A.GetBestOrganism()->GetGene(0)->Value(x0);
-        A.GetBestOrganism()->GetGene(1)->Value(x1);
-        std::cout<<"Generation:"<<i
-                 <<"\tbest:"<<A.GetBestOrganism()->GetFitness()
-                 <<"\tgenome:"<<x0<<","<<x1<<std::endl;
-    }
+    TOrganism<int>::numGenes = 4;
+    TOrganism<int>::init.push_back(1);
+    TOrganism<int>::init.push_back(2);
+    TOrganism<int>::init.push_back(3);
+    TOrganism<int>::init.push_back(4);
+    //TOrganism<int>::fitfunc = &fitness;
+
+    // TODO I would rather specify:
+
+    //TOrganism<int> torg;
+    //torg.PrintGenome();
+    
+    TPopulation<TOrganism<int>> tpop;
+    tpop.GetBestOrganism()->PrintGenome();
+
+    //std::cout<<tpop.GetBestOrganism()->GetFitness()<<std::endl;
+    //tpop.NewGeneration();
+    //tpop.GetBestOrganism()->PrintGenome();
 
 }

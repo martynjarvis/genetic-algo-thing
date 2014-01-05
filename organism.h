@@ -16,32 +16,31 @@
 template <class T> class TOrganism
 {
     public:
-        TOrganism(TConfig<T> * _cfg)
+        TOrganism()
         {
-            cfg = _cfg;
-            for (int i=0; i<cfg->numGenes; i++)
+            for (int i=0; i<numGenes; i++)
             {
-                T initval = cfg->init.at(i); //TODO loop i over init vals, copy?
-                genome.push_back(new TGene<T>(cfg, initval));
+                //T initval = init.at(i); //TODO loop i over init vals, copy?
+                genome.push_back(new T(init.at(i)));
             }
             fitness = -999.;
         }
         
-        TOrganism(TOrganism<T> * mother, TOrganism<T> * father, TConfig<T> * _cfg)
+        TOrganism(TOrganism<T> * mother, TOrganism<T> * father)
         {
-            cfg = _cfg;
             // copy genes from father or mother
             // TODO, add cross over
             std::uniform_int_distribution<> dist(0, 1);
-            for (int i=0; i<cfg->numGenes; i++)
+            for (int i=0; i<numGenes; i++)
             {
-                if (dist(cfg->g) == 0)
+                // if (dist(TPopulation::g) == 0) // TODO
+                if (true)
                 {
-                    genome.push_back(mother->GetGene(i)->Copy());
+                    genome.push_back(new T(mother->GetGene(i)));
                 }
                 else
                 {
-                    genome.push_back(father->GetGene(i)->Copy());
+                    genome.push_back(new T(father->GetGene(i)));
                 }
             }
             fitness = -999.;
@@ -59,13 +58,13 @@ template <class T> class TOrganism
 
         void PrintGenome(){
             std::cout<<"Genome:";
-            for (int i=0; i<cfg->numGenes; i++){
-                std::cout<<'-'<<genome.at(i)->value;
+            for (int i=0; i<numGenes; i++){
+                std::cout<<'-'<<(*genome.at(i));
             }
             std::cout<<std::endl;
         }
 
-        TGene<T> * GetGene(int i)
+        T * GetGene(int i)
         {
             // returns a pointer to gene
             return genome.at(i);
@@ -91,6 +90,7 @@ template <class T> class TOrganism
 
         void Insert(int a, int b){
             // insert b at a and shift everything down
+            // This is not very efficient using swap, but looks nice
             while (a<b){
                 Swap(b,b-1);
                 b--;
@@ -107,15 +107,31 @@ template <class T> class TOrganism
                 return fitness;
             }
             // or calculate, store and return fitness
-            fitness = cfg->fitness(&genome);
+            //fitness = fitfunc(&genome);
             return fitness;
         }
+        static int numGenes;
+        static int mutProb;
+        static T max;
+        static T min;
+        static std::vector<T> init;
+        static T mutAmount;
+        //static double (*fitfunc)(std::vector<TGene<T>*> * genome);
 
     private:
-        std::vector<TGene<T>*> genome; 
+        std::vector<T*> genome; 
         double fitness;
-        TConfig<T> * cfg;
 };
+
+template <class T> int TOrganism<T>::numGenes;
+template <class T> int TOrganism<T>::mutProb;
+template <class T> T TOrganism<T>::max;
+template <class T> T TOrganism<T>::min;
+template <class T> std::vector<T> TOrganism<T>::init;
+template <class T> T TOrganism<T>::mutAmount;
+//template <class T> double TOrganism<T>::
+        //static double 
+        //(*fitfunc)( * genome);
 
 class Organism
 {
