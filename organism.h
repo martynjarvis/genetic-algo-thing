@@ -10,8 +10,7 @@
 #include <iostream>
 #include <random>
 
-#include "gene.h"
-#include "config.h"
+#include "population.h"
 
 template <class T> class TOrganism
 {
@@ -20,7 +19,6 @@ template <class T> class TOrganism
         {
             for (int i=0; i<numGenes; i++)
             {
-                //T initval = init.at(i); //TODO loop i over init vals, copy?
                 genome.push_back(new T(init.at(i)));
             }
             fitness = -999.;
@@ -29,18 +27,16 @@ template <class T> class TOrganism
         TOrganism(TOrganism<T> * mother, TOrganism<T> * father)
         {
             // copy genes from father or mother
-            // TODO, add cross over
             std::uniform_int_distribution<> dist(0, 1);
             for (int i=0; i<numGenes; i++)
             {
-                // if (dist(TPopulation::g) == 0) // TODO
-                if (true)
+                if (dist(TPopulation<T>::g) == 0) 
                 {
-                    genome.push_back(new T(mother->GetGene(i)));
+                    genome.push_back(new T(*mother->GetGene(i)));
                 }
                 else
                 {
-                    genome.push_back(new T(father->GetGene(i)));
+                    genome.push_back(new T(*father->GetGene(i)));
                 }
             }
             fitness = -999.;
@@ -70,8 +66,8 @@ template <class T> class TOrganism
             return genome.at(i);
         }
 
-        void Mutate(){
-            return;
+        void Mutate(int a){
+            mutfunc(genome.at(a));
         }
 
         void Swap(int a, int b){
@@ -107,7 +103,7 @@ template <class T> class TOrganism
                 return fitness;
             }
             // or calculate, store and return fitness
-            //fitness = fitfunc(&genome);
+            fitness = fitfunc(&genome);
             return fitness;
         }
         static int numGenes;
@@ -116,7 +112,8 @@ template <class T> class TOrganism
         static T min;
         static std::vector<T> init;
         static T mutAmount;
-        //static double (*fitfunc)(std::vector<TGene<T>*> * genome);
+        static double (*fitfunc)(std::vector<T*> * genome);
+        static void (*mutfunc)(T* gene);
 
     private:
         std::vector<T*> genome; 
@@ -129,26 +126,7 @@ template <class T> T TOrganism<T>::max;
 template <class T> T TOrganism<T>::min;
 template <class T> std::vector<T> TOrganism<T>::init;
 template <class T> T TOrganism<T>::mutAmount;
-//template <class T> double TOrganism<T>::
-        //static double 
-        //(*fitfunc)( * genome);
-
-class Organism
-{
-    public:
-        Organism(Config * _cfg);
-        Organism(Organism * mother, Organism * father, Config * _cfg);
-        ~Organism();
-        Gene * GetGene(int i);
-        void Mutate();
-        double GetFitness();
-        double CalcFitness();
-        void Randomise();
-
-    private:
-        std::vector<Gene*> genome;
-        double fitness;
-        Config * cfg;
-};
+template <class T> double (*TOrganism<T>::fitfunc)(std::vector<T*> * genome);
+template <class T> void (*TOrganism<T>::mutfunc)(T* gene);
 
 #endif

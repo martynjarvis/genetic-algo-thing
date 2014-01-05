@@ -11,8 +11,6 @@
 #include <random>
 
 #include "organism.h"
-#include "config.h"
-
 
 template <class T> struct TCmp
 {
@@ -102,20 +100,5 @@ template <class T> int TPopulation<T>::populationSize;
 template <class T> int TPopulation<T>::numChildren;   
 template <class T> int TPopulation<T>::numGenerations;  
 template <class T> std::minstd_rand TPopulation<T>::g;
-
-class Population
-{
-    public:
-        Population(Config * cfg);
-        ~Population();
-        void Generation();    
-        void Randomise();
-        Organism * GetOrganism(int n);    
-        Organism * GetBestOrganism();
-
-    private:
-        std::vector<Organism*> organisms;
-        Config * cfg;
-};
 
 #endif

@@ -2,17 +2,17 @@
 #include <iostream>
 #include <stdio.h>
 
-#include "gene.h"
 #include "organism.h"
 #include "population.h"
-#include "config.h"
 
-// forward declaration
-//template <class T> class TGene;
-
-double fitness(std::vector<TGene<int>*> * genome)
+double fitness(std::vector<int*> * genome)
 {
     return 1.0;
+}
+
+void mutate(int*)
+{
+    return;
 }
 
 int main()
@@ -27,18 +27,15 @@ int main()
     TOrganism<int>::init.push_back(2);
     TOrganism<int>::init.push_back(3);
     TOrganism<int>::init.push_back(4);
-    //TOrganism<int>::fitfunc = &fitness;
+    TOrganism<int>::fitfunc = &fitness;
+    TOrganism<int>::mutfunc = &mutate;
 
-    // TODO I would rather specify:
-
-    //TOrganism<int> torg;
-    //torg.PrintGenome();
-    
     TPopulation<TOrganism<int>> tpop;
     tpop.GetBestOrganism()->PrintGenome();
-
+    //tpop.GetBestOrganism()->Mutate(2);
     //std::cout<<tpop.GetBestOrganism()->GetFitness()<<std::endl;
-    //tpop.NewGeneration();
+    tpop.NewGeneration();
+    tpop.GetBestOrganism()->PrintGenome();
     //tpop.GetBestOrganism()->PrintGenome();
 
 }
