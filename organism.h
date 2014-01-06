@@ -53,9 +53,9 @@ template <class T> class TOrganism
         }
 
         void PrintGenome(){
-            std::cout<<"Genome:";
+            std::cout<<"Fitness: "<<GetFitness()<<"\tGenome:";
             for (int i=0; i<numGenes; i++){
-                std::cout<<'-'<<(*genome.at(i));
+                std::cout<<' '<<(*genome.at(i));
             }
             std::cout<<std::endl;
         }
@@ -71,7 +71,9 @@ template <class T> class TOrganism
         }
 
         void Swap(int a, int b){
-            std::swap(genome.at(a),genome.at(b));
+			if (a!=b){
+				std::swap(genome.at(a),genome.at(b));
+			}
             return;
         }
 
@@ -107,7 +109,10 @@ template <class T> class TOrganism
             return fitness;
         }
         static int numGenes;
-        static int mutProb;
+        static double mutProb;
+        static double swapProb;
+        static double insProb;
+        static double invProb;
         static T max;
         static T min;
         static std::vector<T> init;
@@ -121,7 +126,10 @@ template <class T> class TOrganism
 };
 
 template <class T> int TOrganism<T>::numGenes;
-template <class T> int TOrganism<T>::mutProb;
+template <class T> double TOrganism<T>::mutProb;
+template <class T> double TOrganism<T>::swapProb;
+template <class T> double TOrganism<T>::invProb;
+template <class T> double TOrganism<T>::insProb;
 template <class T> T TOrganism<T>::max;
 template <class T> T TOrganism<T>::min;
 template <class T> std::vector<T> TOrganism<T>::init;

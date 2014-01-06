@@ -48,12 +48,14 @@ template <class T> class TPopulation
             std::vector<T*> children;
             children.reserve(numChildren);
 
-            //TODO check num child > pop size
+			// RNG distributions
+			std::uniform_real_distribution<> uniformDist(0.0,1.0);
+			std::uniform_int_distribution<> geneInd(0, T::numGenes-1);
+            std::uniform_int_distribution<> popDist(0, TPopulation<T>::populationSize-1);
 
+            //TODO check num child > pop size
             for (int i =0; i<TPopulation<T>::numChildren;i++){ 
-                // pick two at random
-                std::uniform_int_distribution<> popDist(0, TPopulation<T>::populationSize-1);
-                //todo, this should favour the fittest
+                // pick two at random  //TODO, this should favour the fittest
                 int ind1 = popDist(g);//
                 int ind2 = ind1;
                 while (ind2==ind1) {
@@ -61,6 +63,21 @@ template <class T> class TPopulation
                 }
                 // mate them
                 T * child = new T(population.at(ind1),population.at(ind2));
+
+				// Genetic Operators
+				if (uniformDist(g) < T::mutProb){// mutate
+					child->Mutate(geneInd(g));
+				}
+				if (uniformDist(g)<	T::swapProb){// swap
+					child->Swap(geneInd(g),geneInd(g));
+				}
+				if (uniformDist(g)<	T::invProb){// invert
+					child->Invert(geneInd(g),geneInd(g));
+				}
+				if (uniformDist(g)<	T::insProb){// insert
+					child->Insert(geneInd(g),geneInd(g));
+				}
+				
                 // add to list
                 children.push_back(child);
             }
