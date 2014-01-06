@@ -12,25 +12,26 @@
 
 #include "population.h"
 
-template <class T> class TOrganism
+template <class T> class Organism
 {
     public:
-        TOrganism()
+        Organism()
         {
+			int nInit = init.size();
             for (int i=0; i<numGenes; i++)
             {
-                genome.push_back(new T(init.at(i)));
+                genome.push_back(new T(init.at(i%nInit)));
             }
             fitness = -999.;
         }
         
-        TOrganism(TOrganism<T> * mother, TOrganism<T> * father)
+        Organism(Organism<T> * mother, Organism<T> * father)
         {
             // copy genes from father or mother
             std::uniform_int_distribution<> dist(0, 1);
             for (int i=0; i<numGenes; i++)
             {
-                if (dist(TPopulation<T>::g) == 0) 
+                if (dist(GA<Organism<T>>::g) == 0) 
                 {
                     genome.push_back(new T(*mother->GetGene(i)));
                 }
@@ -42,7 +43,7 @@ template <class T> class TOrganism
             fitness = -999.;
         }
 
-        ~TOrganism()
+        ~Organism()
         {
             //clean up genome
             while(!genome.empty())
@@ -125,16 +126,16 @@ template <class T> class TOrganism
         double fitness;
 };
 
-template <class T> int TOrganism<T>::numGenes;
-template <class T> double TOrganism<T>::mutProb;
-template <class T> double TOrganism<T>::swapProb;
-template <class T> double TOrganism<T>::invProb;
-template <class T> double TOrganism<T>::insProb;
-template <class T> T TOrganism<T>::max;
-template <class T> T TOrganism<T>::min;
-template <class T> std::vector<T> TOrganism<T>::init;
-template <class T> T TOrganism<T>::mutAmount;
-template <class T> double (*TOrganism<T>::fitfunc)(std::vector<T*> * genome);
-template <class T> void (*TOrganism<T>::mutfunc)(T* gene);
+template <class T> int Organism<T>::numGenes;
+template <class T> double Organism<T>::mutProb = 0.0;
+template <class T> double Organism<T>::swapProb = 0.0;
+template <class T> double Organism<T>::invProb = 0.0;
+template <class T> double Organism<T>::insProb = 0.0;
+template <class T> T Organism<T>::max;
+template <class T> T Organism<T>::min;
+template <class T> std::vector<T> Organism<T>::init;
+template <class T> T Organism<T>::mutAmount;
+template <class T> double (*Organism<T>::fitfunc)(std::vector<T*> * genome);
+template <class T> void (*Organism<T>::mutfunc)(T* gene);
 
 #endif

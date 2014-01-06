@@ -10,7 +10,7 @@
 #include <iostream>
 #include <random>
 
-#include "organism.h"
+//#include "organism.h"
 
 template <class T> struct TCmp
 {
@@ -21,16 +21,16 @@ template <class T> struct TCmp
     }
 };
 
-template <class T> class TPopulation
+template <class T> class GA
 {
     public:
-        TPopulation() {
+        GA() {
             for (int i =0; i<populationSize;i++)
             {
                 population.push_back(new T());
             }
         }
-        ~TPopulation() {
+        ~GA() {
             while(!population.empty())
             {
                 delete population.back();
@@ -51,15 +51,15 @@ template <class T> class TPopulation
 			// RNG distributions
 			std::uniform_real_distribution<> uniformDist(0.0,1.0);
 			std::uniform_int_distribution<> geneInd(0, T::numGenes-1);
-            std::uniform_int_distribution<> popDist(0, TPopulation<T>::populationSize-1);
+            std::uniform_int_distribution<> popDist(0, GA<T>::populationSize-1);
 
             //TODO check num child > pop size
-            for (int i =0; i<TPopulation<T>::numChildren;i++){ 
+            for (int i =0; i<GA<T>::numChildren;i++){ 
                 // pick two at random  //TODO, this should favour the fittest
                 int ind1 = popDist(g);//
                 int ind2 = ind1;
                 while (ind2==ind1) {
-                    ind2 = popDist(TPopulation<T>::g);
+                    ind2 = popDist(GA<T>::g);
                 }
                 // mate them
                 T * child = new T(population.at(ind1),population.at(ind2));
@@ -86,7 +86,7 @@ template <class T> class TPopulation
             std::sort(children.begin(),children.end(),TCmp<T>());
 
             // cull weakest, leaving only 'populationSize'
-            while(children.size()>TPopulation<T>::populationSize)// warning unsigned int
+            while(children.size()>GA<T>::populationSize)// warning unsigned int
             {
                 delete children.back();
                 children.pop_back();
@@ -113,9 +113,9 @@ template <class T> class TPopulation
 };
 
 // static member definitions
-template <class T> int TPopulation<T>::populationSize;
-template <class T> int TPopulation<T>::numChildren;   
-template <class T> int TPopulation<T>::numGenerations;  
-template <class T> std::minstd_rand TPopulation<T>::g;
+template <class T> int GA<T>::populationSize;
+template <class T> int GA<T>::numChildren;   
+template <class T> int GA<T>::numGenerations;  
+template <class T> std::minstd_rand GA<T>::g;
 
 #endif

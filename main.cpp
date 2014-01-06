@@ -5,6 +5,7 @@
 #include "organism.h"
 #include "population.h"
 
+
 // function that returns the fitness of a given genome
 double fitness(std::vector<double*> * genome)
 {
@@ -23,35 +24,31 @@ double fitness(std::vector<double*> * genome)
 // function that mutates a gene
 void mutate(double* gene)
 {
-    std::uniform_real_distribution<> dist(-TOrganism<double>::mutAmount, TOrganism<double>::mutAmount);
-    *gene += dist(TPopulation<TOrganism<double>>::g);
+    std::uniform_real_distribution<> dist(-Organism<double>::mutAmount, Organism<double>::mutAmount);
+    *gene += dist(GA<Organism<double>>::g);
     return;
 }
 
 int main()
 {    
-    
-    TPopulation<TOrganism<double>>::populationSize = 50;  
-    TPopulation<TOrganism<double>>::numGenerations = 100;  
-    TPopulation<TOrganism<double>>::numChildren = 100;   
+    // config
+    GA<Organism<double>>::populationSize = 50;  
+    GA<Organism<double>>::numGenerations = 100;  
+    GA<Organism<double>>::numChildren = 100;   
 
-	TOrganism<double>::mutProb = 0.1;
-	TOrganism<double>::swapProb = 0.05; // TODO can I add this to header
-	TOrganism<double>::invProb = 0.00;
-	TOrganism<double>::insProb = 0.00;
-	TOrganism<double>::mutAmount = 1.0;
+	Organism<double>::mutProb = 0.1; // only mutation for this example
+	Organism<double>::mutAmount = 1.0;
 
-    TOrganism<double>::numGenes = 2;
-    TOrganism<double>::init.push_back(10.0);
-    TOrganism<double>::init.push_back(20.0);
+    Organism<double>::numGenes = 2;
+    Organism<double>::init.push_back(1.0); // values to initialise
 
-    TOrganism<double>::fitfunc = &fitness;
-    TOrganism<double>::mutfunc = &mutate;
+    Organism<double>::fitfunc = &fitness;
+    Organism<double>::mutfunc = &mutate;
 
-    TPopulation<TOrganism<double>> tpop;
+    GA<Organism<double>> tpop;
 
 	 
-	for (int i =0; i< TPopulation<TOrganism<double>>::numGenerations; i++){
+	for (int i =0; i< GA<Organism<double>>::numGenerations; i++){
 		tpop.NewGeneration();
 		tpop.GetBestOrganism()->PrintGenome();
     }
