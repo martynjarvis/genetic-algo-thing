@@ -5,11 +5,13 @@
 #include "organism.h"
 #include "population.h"
 
+// function that returns the fitness of a given genome
 double fitness(std::vector<int*> * genome)
 {
     return 1.0;
 }
 
+// function that mutates a gene
 void mutate(int*)
 {
     return;
