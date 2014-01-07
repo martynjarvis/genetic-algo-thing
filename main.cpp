@@ -46,13 +46,11 @@ int main()
     Organism<double>::mutfunc = &mutate;
 
     GA<Organism<double>> tpop;
-
 	 
 	for (int i =0; i< GA<Organism<double>>::numGenerations; i++){
 		tpop.NewGeneration();
 		tpop.GetBestOrganism()->PrintGenome();
-    }
+	}
 
 	system("PAUSE");
-
 }

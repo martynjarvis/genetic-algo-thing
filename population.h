@@ -54,7 +54,7 @@ template <class T> class GA
             std::uniform_int_distribution<> popDist(0, GA<T>::populationSize-1);
 
             //TODO check num child > pop size
-            for (int i =0; i<GA<T>::numChildren;i++){ 
+            for (int i=0; i<GA<T>::numChildren;i++){ 
                 // pick two at random  //TODO, this should favour the fittest
                 int ind1 = popDist(g);//
                 int ind2 = ind1;
